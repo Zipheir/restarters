@@ -1,9 +1,22 @@
+(define-syntax assert-type
+  ((assert-type test . args)
+   (unless test
+     (error "type check failed" 'expr . args))))
+
 (define-record-type <restarter>
-  (make-restarter tag description invoker)
+  (make-raw-restarter tag description invoker)
   restarter?
   (tag restarter-tag)
   (description restarter-description)
   (invoker restarter-invoker))
+
+;; Exported constructor.
+(define (make-restarter tag description invoker)
+  (assert-type (symbol? tag))
+  (assert-type (and (list? description)
+                    (every string? description)))
+  (assert-type (procedure? invoker))
+  (make-raw-restarter tag description invoker))
 
 (define (restart restarter . args)
   (apply (restarter-invoker restarter) args))
