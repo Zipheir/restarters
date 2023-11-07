@@ -1,7 +1,8 @@
 (define-syntax assert-type
-  ((assert-type test . args)
-   (unless test
-     (error "type check failed" 'expr . args))))
+  (syntax-rules ()
+    ((assert-type test . args)
+     (unless test
+       (error "type check failed" 'expr . args)))))
 
 (define-record-type <restarter>
   (make-raw-restarter tag description invoker)
