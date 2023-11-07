@@ -107,7 +107,7 @@
                (display ": ")
                (read)))
             cdr
-            (restarter-description restarter)))
+            (cdr (restarter-description restarter))))
 
   (display-choices)
   (let* ((restarter (read-choice))
