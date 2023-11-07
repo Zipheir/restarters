@@ -65,23 +65,13 @@
         (find pred (ambient-restarters)))))
 
 (define (collect-restarters restarters)
-  (define lst (append (restarters->list restarters #t)
-                      (ambient-restarters)))
-  (let loop ((lst lst)
-             (rez '())
-             (tags '()))
-    (cond
-     ((null? lst) (reverse rez))
-     (else (let* ((restarter (car lst))
-                  (tag (restarter-tag restarter)))
-             (if (or (not tag)
-                     (find (lambda (t) (eqv? tag t)) tags))
-                 (loop (cdr lst)
-                       rez
-                       tags)
-                 (loop (cdr lst)
-                       (cons restarter rez)
-                       (cons tag tags))))))))
+  (let ((list (restarters->list restarters #t)))
+    (append list
+            (lset-difference (lambda (r1 r2)
+                               (eqv? (restarter-tag r1)
+                                     (restarter-tag r2)))
+                             (ambient-restarters)
+                             list))))
 
 (define (restart-interactively restarters)
   ((interactor) (collect-restarters restarters)))
