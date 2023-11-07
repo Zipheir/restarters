@@ -55,12 +55,9 @@
   (parameterize ((ambient-restarters (collect-restarters restarters)))
     (thunk)))
 
-(define (make-restarter-tag-pred tag)
-  (lambda (restarter)
-    (eqv? tag (restarter-tag restarter))))
-
 (define (find-restarter tag restarters)
-  (let ((pred (make-restarter-tag-pred tag)))
+  (let ((pred (lambda (restarter)
+                (eqv? tag (restarter-tag restarter)))))
     (or (find pred (restarters->list restarters #t))
         (find pred (ambient-restarters)))))
 
