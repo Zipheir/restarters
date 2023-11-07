@@ -21,7 +21,7 @@
 
         restart
         ambient-restarters
-        with-restarter
+        with-restarters
         find-restarter
         collect-restarters
         restart-interactively

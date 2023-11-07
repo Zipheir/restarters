@@ -51,8 +51,8 @@
              (error "not a restarter, list of restarters or a compound object" restarters)
              (error "not a restarter or a list of restarters" restarters)))))
 
-(define (with-restarter restarters thunk)
-  (parameterize ((ambient-restarters (restarters->list restarters #f)))
+(define (with-restarters restarters thunk)
+  (parameterize ((ambient-restarters (collect-restarters restarters)))
     (thunk)))
 
 (define (make-restarter-tag-pred tag)
