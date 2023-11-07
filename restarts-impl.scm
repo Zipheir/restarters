@@ -60,11 +60,9 @@
     (eqv? tag (restarter-tag restarter))))
 
 (define (find-restarter tag restarters)
-  (define lst (restarters->list restarters #t))
-  (define pred (make-restarter-tag-pred tag))
-  (let* ((restarter (find pred lst))
-         (restarter (or restarter (find pred (ambient-restarters)))))
-    restarter))
+  (let ((pred (make-restarter-tag-pred tag)))
+    (or (find pred (restarters->list restarters #t))
+        (find pred (ambient-restarters)))))
 
 (define (collect-restarters restarters)
   (define lst (append (restarters->list restarters #t)
