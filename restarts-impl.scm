@@ -13,7 +13,7 @@
 ;; Exported constructor.
 (define (make-restarter tag description invoker)
   (assert-type (symbol? tag))
-  (assert-type (and (list? description)
+  (assert-type (and (pair? description)
                     (every string? description)))
   (assert-type (procedure? invoker))
   (make-raw-restarter tag description invoker))
