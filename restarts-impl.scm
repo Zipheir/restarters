@@ -57,8 +57,7 @@
 
 (define (make-restarter-tag-pred tag)
   (lambda (restarter)
-    (define tag* (restarter-tag restarter))
-    (and tag* (eqv? tag tag*))))
+    (eqv? tag (restarter-tag restarter))))
 
 (define (find-restarter tag restarters)
   (define lst (restarters->list restarters #t))
