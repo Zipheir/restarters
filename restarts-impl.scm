@@ -46,8 +46,10 @@
            (restarters (filter restarter? subobjs)))
       restarters))
    (allow-compound?
-    (error "not a restarter, list of restarters or a compound object" restarters))
-   (else (error "not a restarter or a list of restarters" restarters))))
+    (error "not a restarter, list of restarters, or a compound object"
+           restarters))
+   (else
+    (error "not a restarter or a list of restarters" restarters))))
 
 (define (with-restarters restarters thunk)
   (parameterize ((ambient-restarters (collect-restarters restarters)))
