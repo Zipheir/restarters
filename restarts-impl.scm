@@ -24,32 +24,30 @@
 (define ambient-restarters (make-parameter '()))
 
 (define (restarters->list restarters allow-compound?)
+  ;; Ensure that each element of *restarters* is a
+  ;; restarter with a unique tag (with respect to the
+  ;; rest of the list).
+  (define (check-restarter-list restarters)
+    (let loop ((elts restarters) (seen-tags '()))
+      (when (pair? elts)
+        (let* ((r (car elts)) (tag (restarter-tag r)))
+          (assert-type (restarter? r) r)
+          (when (memv tag seen-tags)
+            (error "duplicate tag in restarter list" tag))
+          (loop (cdr elts) (cons tag seen-tags))))))
+
   (cond
    ((list? restarters)
-    (let loop ((elements restarters)
-               (tags '()))
-      (cond
-       ((null? elements) restarters)
-       (else (let* ((r (car elements)))
-               (unless (restarter? r)
-                 (error "not a restarter in list" t))
-               (when (and (restarter-tag r)
-                          (find (lambda (t)
-                                  (eqv? t (restarter-tag r)))
-                                tags))
-                 (error "duplicate tag in restarter list" (restarter-tag r)))
-               (loop (cdr elements)
-                     (cons (restarter-tag r)
-                           tags)))))))
-   ((restarter? restarters)
-    (list restarters))
+    (check-restarter-list restarters)
+    restarters)
+   ((restarter? restarters) (list restarters))
    ((and allow-compound? (compound? restarters))
     (let* ((subobjs (compound-subobjects restarters))
            (restarters (filter restarter? subobjs)))
       restarters))
-   (else (if allow-compound?
-             (error "not a restarter, list of restarters or a compound object" restarters)
-             (error "not a restarter or a list of restarters" restarters)))))
+   (allow-compound?
+    (error "not a restarter, list of restarters or a compound object" restarters))
+   (else (error "not a restarter or a list of restarters" restarters))))
 
 (define (with-restarters restarters thunk)
   (parameterize ((ambient-restarters (collect-restarters restarters)))
