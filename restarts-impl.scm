@@ -74,44 +74,39 @@
   ((interactor) (collect-restarters restarters)))
 
 (define (default-interactor restarters)
-
-  (define l (length restarters))
+  ;; Like find-restarter, but only searches its argument list.
+  (define (find-local-restarter tag rs)
+    (find (lambda (r) (eqv? tag (restarter-tag r))) rs))
 
   (define (display-choices)
-    (display "Choose restarter:\n")
+    (display "The following actions are available:")
+    (newline)
     (for-each
-     (lambda (r index)
-       (display "\t")
-       (display (+ 1 index))
-       (display ". ")
+     (lambda (r)
        (display (restarter-tag r))
-       (display " ")
+       (display ": ")
        (display (car (restarter-description r)))
        (newline))
-     restarters
-     (iota l)))
+     restarters)
+    (display "Which action do you choose: "))
 
   (define (read-choice)
-    (define choice (read))
-    (if (<= 1 choice l)
-        (list-ref restarters (- choice 1))
-        (begin
-           (display "Choice must be a number between 1 and ")
-           (display l)
+    (let ((choice (read)))
+      (or (find-local-restarter choice restarters)
+          (begin
+           (display "Invalid choice. Try again.")
            (newline)
-           (read-choice))))
+           (read-choice)))))
 
   (define (read-restarter-params restarter)
-    (let loop ((descriptions (cdr (restarter-description restarter)))
-               (param-values '()))
-      (cond
-       ((null? descriptions) (reverse param-values))
-       (else
-        (begin
-          (display (car descriptions))
-          (newline)
-          (loop (cdr descriptions)
-                (cons (read) param-values)))))))
+    (unfold null?
+            (lambda (ds)
+              (begin
+               (display (car ds))
+               (display ": ")
+               (read)))
+            cdr
+            (restarter-description restarter)))
 
   (display-choices)
   (let* ((restarter (read-choice))
