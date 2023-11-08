@@ -21,7 +21,7 @@
  (test-equal '(test) (restart restarter))
  (test-equal '(test 1 2 3) (restart restarter 1 2 3)))
 
-(test-group "with-restarter, find-restarter, collect-restarters"
+(test-group "with-restarters, find-restarter, collect-restarters"
  (define a1 (make-restarter 'r1 '("test") (lambda args args)))
  (define a2 (make-restarter 'r2 '("test") (lambda args args)))
  (define r1 (make-restarter 'r1 '("test") (lambda args args)))
