@@ -29,17 +29,17 @@
 
  (with-restarter a1
                  (lambda ()
-                   (test-eq a1 (find-restarter 'r1 '()))))
+                   (test-eqv a1 (find-restarter 'r1 '()))))
 
  (with-restarter a1
                  (lambda ()
-                   (test-eq r1 (find-restarter 'r1 r1))))
+                   (test-eqv r1 (find-restarter 'r1 r1))))
 
  (with-restarter (list a1 a2)
                  (lambda ()
                    (define collected (collect-restarters (list r1)))
-                   (test-eq r1 (car collected))
-                   (test-eq a2 (cadr collected))
+                   (test-eqv r1 (car collected))
+                   (test-eqv a2 (cadr collected))
                    (test-assert (null? (cddr collected))))))
 
 (test-group "default interactor"
