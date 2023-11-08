@@ -1,10 +1,24 @@
 (test-begin "Restarts")
 
+(test-group "Predicate"
+ (test-equal #t (restarter? (make-restarter 'a '("a") values))))
+
+(test-group "Accessors"
+ (test-equal 'test-restart
+             (restarter-tag (make-restarter 'test-restart
+                                            '("test")
+                                            values)))
+ (test-equal '("test")
+             (restarter-description
+              (make-restarter 'test-restart '("test") values))))
+
 (test-group "restart"
  (define restarter
    (make-restarter 'test-restart
                    '("test")
                    (lambda args (cons 'test args))))
+
+ (test-equal '(test) (restart restarter))
  (test-equal '(test 1 2 3) (restart restarter 1 2 3)))
 
 (test-group "with-restarter, find-restarter, collect-restarters"
