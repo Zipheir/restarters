@@ -40,7 +40,17 @@
                    (define collected (collect-restarters (list r1)))
                    (test-eqv #t (and (memv r1 collected) #t))
                    (test-eqv #t (and (memv a2 collected) #t))
-                   (test-assert (null? (cddr collected))))))
+                   (test-assert (null? (cddr collected)))))
+
+  ;; Ensure collect-restarters prioritizes restarters passed to it.
+  (let* ((a1* (make-restarter 'r1 '("this is not a test") list))
+         (thunk
+          (lambda ()
+            (test-equal
+             '("this is not a test")
+             (restarter-description
+              (find-restarter 'r1 (collect-restarters a1*)))))))
+    (with-restarter a1 thunk)))
 
 (test-group "default interactor"
  (define a1
