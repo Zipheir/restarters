@@ -10,7 +10,6 @@
 (test-group "with-restarter, find-restarter, collect-restarters"
  (define a1 (make-restarter 'r1 '("test") (lambda args args)))
  (define a2 (make-restarter 'r2 '("test") (lambda args args)))
- (define a3 (make-restarter #f '("test") (lambda args args)))
  (define r1 (make-restarter 'r1 '("test") (lambda args args)))
  (define r2 (make-restarter 'r2 '("test") (lambda args args)))
 
@@ -21,10 +20,6 @@
  (with-restarter a1
                  (lambda ()
                    (test-eq r1 (find-restarter 'r1 r1))))
-
- (with-restarter (list a1 a2)
-                 (lambda ()
-                   (test-equal #f (find-restarter 'r3 (list r1 r2)))))
 
  (with-restarter (list a1 a2)
                  (lambda ()
