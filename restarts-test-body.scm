@@ -3,7 +3,7 @@
 (test-group
  "restart"
 
- (define restarter (make-restarter #f '("test") (lambda args (cons 'test args))))
+ (define restarter (make-restarter 'test-restart '("test") (lambda args (cons 'test args))))
  (test-equal '(test 1 2 3) (restart restarter 1 2 3)))
 
 (test-group
