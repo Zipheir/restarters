@@ -27,6 +27,16 @@
  (define r1 (make-restarter 'r1 '("test") (lambda args args)))
  (define r2 (make-restarter 'r2 '("test") (lambda args args)))
 
+ (with-restarters
+  a1
+  (lambda ()
+    (with-restarters
+     a2
+     (lambda ()
+       (let ((rs (collect-restarters '())))
+         (test-assert (or (equal? rs (list a1 a2))
+                          (equal? rs (list a2 a1)))))))))
+
  (with-restarters a1
                   (lambda ()
                     (test-eqv a1 (find-restarter 'r1 '()))))
