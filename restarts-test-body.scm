@@ -28,19 +28,19 @@
  (define r2 (make-restarter 'r2 '("test") (lambda args args)))
 
  (with-restarters a1
-                 (lambda ()
-                   (test-eqv a1 (find-restarter 'r1 '()))))
+                  (lambda ()
+                    (test-eqv a1 (find-restarter 'r1 '()))))
 
  (with-restarters a1
-                 (lambda ()
-                   (test-eqv r1 (find-restarter 'r1 r1))))
+                  (lambda ()
+                    (test-eqv r1 (find-restarter 'r1 r1))))
 
  (with-restarters (list a1 a2)
-                 (lambda ()
-                   (define collected (collect-restarters (list r1)))
-                   (test-eqv #t (and (memv r1 collected) #t))
-                   (test-eqv #t (and (memv a2 collected) #t))
-                   (test-assert (null? (cddr collected)))))
+                  (lambda ()
+                    (define collected (collect-restarters (list r1)))
+                    (test-eqv #t (and (memv r1 collected) #t))
+                    (test-eqv #t (and (memv a2 collected) #t))
+                    (test-assert (null? (cddr collected)))))
 
   ;; Ensure collect-restarters prioritizes restarters passed to it.
   (let* ((a1* (make-restarter 'r1 '("this is not a test") list))
@@ -78,8 +78,8 @@
    (parameterize ((current-input-port input-port)
                   (current-output-port output-port))
      (with-restarters a1
-                     (lambda ()
-                       (restart-interactively r1)))))
+                      (lambda ()
+                        (restart-interactively r1)))))
 
  (test-equal 'foo result)
  (test-equal expected-output (get-output-string output-port)))
