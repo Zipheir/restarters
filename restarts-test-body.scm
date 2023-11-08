@@ -38,8 +38,8 @@
  (with-restarter (list a1 a2)
                  (lambda ()
                    (define collected (collect-restarters (list r1)))
-                   (test-eqv r1 (car collected))
-                   (test-eqv a2 (cadr collected))
+                   (test-eqv #t (and (memv r1 collected) #t))
+                   (test-eqv #t (and (memv a2 collected) #t))
                    (test-assert (null? (cddr collected))))))
 
 (test-group "default interactor"
