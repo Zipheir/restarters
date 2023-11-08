@@ -1,14 +1,13 @@
 (test-begin "Restarts")
 
-(test-group
- "restart"
-
- (define restarter (make-restarter 'test-restart '("test") (lambda args (cons 'test args))))
+(test-group "restart"
+ (define restarter
+   (make-restarter 'test-restart
+                   '("test")
+                   (lambda args (cons 'test args))))
  (test-equal '(test 1 2 3) (restart restarter 1 2 3)))
 
-(test-group
- "with-restarter, find-restarter, collect-restarters"
-
+(test-group "with-restarter, find-restarter, collect-restarters"
  (define a1 (make-restarter 'r1 '("test") (lambda args args)))
  (define a2 (make-restarter 'r2 '("test") (lambda args args)))
  (define a3 (make-restarter #f '("test") (lambda args args)))
@@ -34,12 +33,20 @@
                    (test-eq a2 (cadr collected))
                    (test-assert (null? (cddr collected))))))
 
-(test-group
- "default interactor"
+(test-group "default interactor"
+ (define a1
+   (make-restarter 'a1
+                   '("ambient1")
+                   (lambda args (error "shouldn't get here"))))
 
- (define a1 (make-restarter 'a1 '("ambient1") (lambda args (error "shouldn't get here"))))
- (define r1 (make-restarter 'r1 '("restarter1" "param") (lambda (arg) arg)))
- (define input-port (open-input-string "3 1 foo")) ;; choose (invalidly) 3rd restarter, choose 1st restarter, supply parameter
+ (define r1
+   (make-restarter 'r1
+                   '("restarter1" "param")
+                   (lambda (arg) arg)))
+
+ ;; choose (invalidly) 3rd restarter, choose 1st restarter,
+ ;; supply parameter
+ (define input-port (open-input-string "3 1 foo"))
  (define expected-output
    (string-append
     "Choose restarter:\n"
