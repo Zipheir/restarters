@@ -63,7 +63,8 @@
  (define a1
    (make-restarter 'a1
                    '("ambient1")  ; by brian eno
-                   (lambda args (error "shouldn't get here"))))
+                   (lambda args
+                     (error 'interactor-test "shouldn't get here"))))
 
  (define r1
    (make-restarter 'r1
