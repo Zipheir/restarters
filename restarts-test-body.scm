@@ -59,10 +59,10 @@
             (test-eqv a1* (find-restarter 'r1 (collect-restarters a1*))))))
     (with-restarters a1 thunk)))
 
-#;(test-group "default interactor"
+(test-group "default interactor"
  (define a1
    (make-restarter 'a1
-                   '("ambient1")
+                   '("ambient1")  ; by brian eno
                    (lambda args (error "shouldn't get here"))))
 
  (define r1
@@ -70,25 +70,15 @@
                    '("restarter1" "param")
                    (lambda (arg) arg)))
 
- ;; choose (invalidly) 3rd restarter, choose 1st restarter,
+ ;; Choose invalid restarter, choose 1st restarter, then
  ;; supply parameter
- (define input-port (open-input-string "3 1 foo"))
- (define expected-output
-   (string-append
-    "Choose restarter:\n"
-    "\t1. r1 restarter1\n"
-    "\t2. a1 ambient1\n"
-    "Choice must be a number between 1 and 2\n"
-    "param\n"))
+ (define input-port (open-input-string "frobnitz\nr1\nfoo\n"))
  (define output-port (open-output-string))
- (define result
-   (parameterize ((current-input-port input-port)
-                  (current-output-port output-port))
-     (with-restarters a1
-                      (lambda ()
-                        (restart-interactively r1)))))
-
- (test-equal 'foo result)
- (test-equal expected-output (get-output-string output-port)))
+ (test-eqv
+  'foo
+  (parameterize ((current-input-port input-port)
+                 (current-output-port output-port))
+    (with-restarters a1
+                     (lambda () (restart-interactively r1))))))
 
 (test-end)
