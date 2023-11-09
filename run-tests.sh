@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage () {
-        printf 'Usage: %s (chez|guile|chibi)\n' $(basename $0) 1>&2
+        printf 'Usage: %s (chez|guile|chibi)\n' "$(basename $0)" 1>&2
         exit 1
 }
 
