@@ -22,4 +22,5 @@
 
   (define (compound? obj) #f)
   (define (compound-subobjects obj) '())
-  (include "restarts-impl.scm"))
+  (include "restarts-impl.scm")
+  (include "default-interactor.scm"))

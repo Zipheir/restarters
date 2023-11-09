@@ -36,4 +36,5 @@
          ((error who msg . args)
           (r7rs-error msg (list 'location who) . args)))))
 
-    (include "restarts-impl.scm"))
+    (include "restarts-impl.scm")
+    (include "default-interactor.scm"))
