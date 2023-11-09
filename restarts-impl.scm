@@ -72,8 +72,3 @@
                                      (restarter-tag r2)))
                              (ambient-restarters)
                              list))))
-
-(define (restart-interactively restarters)
-  ((interactor) (collect-restarters restarters)))
-
-(define interactor (make-parameter default-interactor))

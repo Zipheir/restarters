@@ -37,3 +37,8 @@
   (let* ((restarter (read-choice))
          (params (read-restarter-params restarter)))
     (apply restart restarter params)))
+
+(define (restart-interactively restarters)
+  ((interactor) (collect-restarters restarters)))
+
+(define interactor (make-parameter default-interactor))
