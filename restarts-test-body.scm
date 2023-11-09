@@ -56,10 +56,7 @@
   (let* ((a1* (make-restarter 'r1 '("this is not a test") list))
          (thunk
           (lambda ()
-            (test-equal
-             '("this is not a test")
-             (restarter-description
-              (find-restarter 'r1 (collect-restarters a1*)))))))
+            (test-eqv a1* (find-restarter 'r1 (collect-restarters a1*))))))
     (with-restarters a1 thunk)))
 
 #;(test-group "default interactor"
