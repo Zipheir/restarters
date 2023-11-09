@@ -72,13 +72,12 @@
 
  ;; Choose invalid restarter, choose 1st restarter, then
  ;; supply parameter
- (define input-port (open-input-string "frobnitz\nr1\nfoo\n"))
- (define output-port (open-output-string))
- (test-eqv
-  'foo
-  (parameterize ((current-input-port input-port)
-                 (current-output-port output-port))
-    (with-restarters a1
-                     (lambda () (restart-interactively r1))))))
+ (let ((input-port (open-input-string "frobnitz\nr1\nfoo\n")))
+   (test-eqv
+    'foo
+    (parameterize ((current-input-port input-port)
+                   (current-output-port (open-output-string))) ; dummy
+      (with-restarters a1
+                       (lambda () (restart-interactively r1)))))))
 
 (test-end)
